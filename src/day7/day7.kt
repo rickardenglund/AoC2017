@@ -1,12 +1,11 @@
 package day7
 
-import java.io.File
-import java.io.InputStream
+import input.getInput
 
 data class ParseResult(val name: String, val weight: Int, val children: List<String>)
 
 fun main(args: Array<String>) {
-    val nodes = parseInput()
+    val nodes = getInput("E:\\\\rickard\\\\Documents\\\\Advent of code\\\\src\\\\day7\\\\input.txt", ::parseLine)
 //    val root = findRoot(nodes)
     val root = getProgram("ihnus", nodes)
     val total = getWeight(root, nodes)
@@ -15,6 +14,27 @@ fun main(args: Array<String>) {
         println("$childname ${getWeight(node, nodes)}")
     }
     println(total)
+}
+
+fun parseLine(line: String): ParseResult {
+    val lineMatcher = "(\\w+)\\s+\\((\\d+)\\)(.*)".toRegex()
+    val match = lineMatcher.find(line)
+    if (match != null) {
+        val newProgram =
+                ParseResult(
+                        name = match.groups[1]!!.value,
+                        weight = match.groups[2]!!.value.toInt(),
+                        children = parseGroups(match.groups[3]!!.value))
+        return newProgram
+    }
+    throw Exception("Failed to parse line: $line")
+}
+
+fun parseGroups(value: String): List<String> {
+
+    val matcher = "\\w+".toRegex()
+    val matches = matcher.findAll(value)
+    return matches.map { it.value }.toList()
 }
 
 fun getProgram(name: String, nodes: List<ParseResult>) : ParseResult {
@@ -44,32 +64,4 @@ fun findRoot(inputs : List<ParseResult>): ParseResult {
     throw Exception("No Root Exception")
 }
 
-fun parseInput(): List<ParseResult> {
-    println("Parsing: ")
-    val results = listOf<ParseResult>().toMutableList()
-    val inputStream: InputStream = File("E:\\rickard\\Documents\\Advent of code\\src\\day7\\input.txt").inputStream()
-
-    inputStream.bufferedReader().useLines { lines -> lines.forEach {
-        val lineMatcher = "(\\w+)\\s+\\((\\d+)\\)(.*)".toRegex()
-        val match = lineMatcher.find(it)
-        if (match != null) {
-            val newProgram =
-                    ParseResult(
-                            name = match!!.groups[1]!!.value,
-                            weight = match!!.groups[2]!!.value.toInt(),
-                            children = parseGroups(match!!.groups[3]!!.value))
-            results.add(newProgram)
-
-            }
-        }
-    }
-    return results
-}
-
-fun parseGroups(value: String): List<String> {
-
-    val matcher = "\\w+".toRegex()
-    val matches = matcher.findAll(value)
-    return matches.map { it.value }.toList()
-}
 
