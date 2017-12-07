@@ -123,9 +123,3 @@ fun printMat(rows: Array<Array<Int>>) {
 
 private fun getSize(target: Int) =
         Math.sqrt(target.toDouble()).toInt()+1
-
-
-@Test
-fun doTest() {
-    kotlin.test.assertEquals(true, false)
-}
