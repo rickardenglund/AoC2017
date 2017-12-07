@@ -9,9 +9,9 @@ fun main(args: Array<String>) {
 //    val root = findRoot(nodes)
     val root = getProgram("ihnus", nodes)
     val total = getWeight(root, nodes)
-    root.children.map { childname ->
-        val node = getProgram(childname, nodes)
-        println("$childname ${getWeight(node, nodes)}")
+    root.children.map { childName ->
+        val node = getProgram(childName, nodes)
+        println("$childName ${getWeight(node, nodes)}")
     }
     println(total)
 }
@@ -20,18 +20,15 @@ fun parseLine(line: String): ParseResult {
     val lineMatcher = "(\\w+)\\s+\\((\\d+)\\)(.*)".toRegex()
     val match = lineMatcher.find(line)
     if (match != null) {
-        val newProgram =
-                ParseResult(
-                        name = match.groups[1]!!.value,
-                        weight = match.groups[2]!!.value.toInt(),
-                        children = parseGroups(match.groups[3]!!.value))
-        return newProgram
+        return ParseResult(
+                name = match.groups[1]!!.value,
+                weight = match.groups[2]!!.value.toInt(),
+                children = parseGroups(match.groups[3]!!.value))
     }
     throw Exception("Failed to parse line: $line")
 }
 
 fun parseGroups(value: String): List<String> {
-
     val matcher = "\\w+".toRegex()
     val matches = matcher.findAll(value)
     return matches.map { it.value }.toList()
