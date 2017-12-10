@@ -14,24 +14,30 @@ fun sparseHash(lengths: List<Int>, size: Int): List<Int> {
     val list = (0 until size).toMutableList()
     var i = 0
     var skipSize = 0
+
     for (round in 1..64) {
         for (hashLength in lengths) {
-            val reversed = list.sublistWrapping(i, (i+hashLength)%list.size, hashLength).asReversed()
-
-            if (reversed.size != hashLength) {
-                throw Exception("Failed sublist: $reversed")
-            }
-            var iCopy = i
-            for (x in reversed) {
-                list[iCopy] = x
-                iCopy = (iCopy + 1)%list.size
-            }
+            list.reverse(i, (i+hashLength)%list.size, hashLength)
 
             i = (i + skipSize + hashLength)%list.size
             skipSize++
         }
     }
     return list
+}
+
+fun MutableList<Int>.reverse(start: Int, stop: Int, length: Int) {
+    val reversed = this.sublistWrapping(start, stop, length).asReversed()
+
+    if (reversed.size != length) {
+        throw Exception("Failed sublist: $reversed")
+    }
+    var iCopy = start
+    for (x in reversed) {
+        this[iCopy] = x
+        iCopy = (iCopy + 1)%this.size
+    }
+
 }
 
 fun Int.pad(width: Int):String {
