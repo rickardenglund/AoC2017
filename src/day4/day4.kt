@@ -3,7 +3,7 @@ package day4
 import input.getInput
 
 fun main(args: Array<String>) {
-    val validLines = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day4\\input",
+    val validLines = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day4\\testInput",
             {line -> line.split("\\W+".toRegex())})
 
     val nValidLines = validLines.count{ lineIsValid(it)}

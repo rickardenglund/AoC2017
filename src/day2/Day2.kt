@@ -6,7 +6,7 @@ data class MinMax(val min :Int, val max: Int)
 
 fun main(args : Array<String>) {
     val rows = getInput(
-            "E:\\rickard\\Documents\\Advent of code\\src\\day2\\input",
+            "E:\\rickard\\Documents\\Advent of code\\src\\day2\\testInput",
             ::parseRow)//listOf(listOf(5,9,2,8), listOf(9,4,7,3), listOf(3,8,6,5))
     val diffs = rows.map{
         val pair = getDivideAble(it)

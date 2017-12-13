@@ -13,7 +13,7 @@ data class Instruction(
 
 fun main(args: Array<String>) {
     val registers = hashMapOf<String, Int>()
-    val instructions = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day8\\input", ::parseRow)
+    val instructions = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day8\\testInput", ::parseRow)
 
     var totalMax = Int.MIN_VALUE
     instructions.map{ instruction ->

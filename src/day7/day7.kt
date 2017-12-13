@@ -5,7 +5,7 @@ import input.getInput
 data class ParseResult(val name: String, val weight: Int, val children: List<String>)
 
 fun main(args: Array<String>) {
-    val nodes = getInput("E:\\\\rickard\\\\Documents\\\\Advent of code\\\\src\\\\day7\\\\input.txt", ::parseLine)
+    val nodes = getInput("E:\\\\rickard\\\\Documents\\\\Advent of code\\\\src\\\\day7\\\\testInput.txt", ::parseLine)
 //    val root = findRoot(nodes)
     val root = getProgram("ihnus", nodes)
     val total = getWeight(root, nodes)

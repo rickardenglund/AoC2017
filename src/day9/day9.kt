@@ -27,7 +27,7 @@ fun testGarbage() {
 
 
     var totalScore = 0
-    getInput("E:\\rickard\\Documents\\Advent of code\\src\\day9\\input",
+    getInput("E:\\rickard\\Documents\\Advent of code\\src\\day9\\testInput",
             { row ->
                 println("###################################################")
                 val cleanRow = clean(row)

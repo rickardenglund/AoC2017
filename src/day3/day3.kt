@@ -110,7 +110,7 @@ fun createLayer(layer: Int, start: Pos): List<Pos> {
         poss.add(Pos(current.x+i, current.y))
     }
 
-    println("Layer: $layer LayerWidth: $layerWidth Size: ${poss.size}")
+    println("Wall: $layer LayerWidth: $layerWidth Size: ${poss.size}")
     return poss
 }
 

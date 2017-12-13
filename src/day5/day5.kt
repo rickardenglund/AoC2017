@@ -3,7 +3,7 @@ package day5
 import input.getInput
 
 fun main(args: Array<String>) {
-    val input = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day5\\input",
+    val input = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day5\\testInput",
             {str -> str.toInt()}).toMutableList()
     println(input)
 
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
             input[prevIndex] = input[prevIndex] - 1
         }
         cnt++
-//        println("cur: $cur input: $input")
+//        println("cur: $cur testInput: $testInput")
     }
     println(cnt)
 }
