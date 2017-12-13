@@ -5,33 +5,45 @@ import input.getInput
 data class Wall(val time: Int, val depth: Int)
 
 fun main(args: Array<String>) {
-    val input = parseInput("testInput")
+    val input = parseInput("input")
 
-//    input.map{println("pos: ${scannerPos(it, 10)}")}
-
-
-    var severity = Int.MAX_VALUE
-    var delay = 0
-    while (severity > 0) {
-        severity = getSeverity(input, delay)
-        delay++
+    for (delay in 1 until Int.MAX_VALUE) {
+//val    delay = 1
+        if (delay % 10000 == 0) println(delay)
+        val safe = isDelaySafe(input, delay)
+        if (safe) {
+            println("D: $delay")
+            break
+        }
     }
-        println("delay: ${delay-1} S: $severity")
 
-    println(severity)
+//    var severity = Int.MAX_VALUE
+//    var delay = 0
+//    while (severity > 0) {
+//        severity = getSeverity(input, delay)
+//        delay++
+//    }
+//        println("delay: ${delay-1} S: $severity")
 }
 
 enum class Direction{UP,DOWN}
 
-fun getSeverity(input: List<Wall>, delay: Int): Int {
-
-    return input.filter { scannerPos(it, delay) == 0 }.sumBy { it.time*it.depth }
+fun getSeverity(input: List<Wall>): Int {
+    return input.filter { scannerPos(it, it.time) == 0 }.sumBy { it.time*it.depth }
 }
 
-fun scannerPos(wall: Wall, delay: Int) : Int {
+fun isDelaySafe(input: List<Wall>, delay: Int): Boolean {
+    val poss = input.map{scannerPos(it,it.time+delay )}
+//    poss.map { print("$it ") }
+//    println()
+    return poss.count{it == 0} ==0
+
+}
+
+fun scannerPos(wall: Wall, clock: Int) : Int {
     var scannerPos = -1
     var scannerDirection = Direction.DOWN
-    for (currentTime in 0..(wall.time + delay)) {
+    for (currentTime in 0..(clock % (wall.depth*2-2))) {
         if (scannerPos == 0) scannerDirection = Direction.DOWN
         if (scannerPos == wall.depth -1) scannerDirection = Direction.UP
 
@@ -39,9 +51,6 @@ fun scannerPos(wall: Wall, delay: Int) : Int {
             Direction.UP -> scannerPos--
             Direction.DOWN -> scannerPos++
         }
-//        if (currentTime == delay) println("0:   $scannerPos $scannerDirection")
-//        else println("$scannerPos $scannerDirection")
-//        println(scannerPos)
     }
     return scannerPos
 }
