@@ -3,11 +3,15 @@ package day10
 val salt = listOf(17, 31, 73, 47, 23)
 
 fun main(args: Array<String>) {
-    val lengths = "206,63,255,131,65,80,238,157,254,24,133,2,16,0,1,3".toAsciiList()
-    lengths.addAll(salt)
+    val lengths = "206,63,255,131,65,80,238,157,254,24,133,2,16,0,1,3"
 
-    val sparseHash = sparseHash(lengths, 256)
-    println(sparseHash.sparseToDense())
+    println(knotHash(lengths))
+}
+
+fun knotHash(str: String): String {
+    val ints = str.toAsciiList()
+    ints.addAll(salt)
+    return sparseHash(ints, 256).sparseToDense()
 }
 
 fun sparseHash(lengths: List<Int>, size: Int): List<Int> {
