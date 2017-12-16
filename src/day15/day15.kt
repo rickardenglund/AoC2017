@@ -26,7 +26,6 @@ class Generator(var value: BigInteger, val factor: BigInteger, val multiple: Big
         return str
     }
 
-
     fun next(): BigInteger {
         do {
             value = (value * factor) % divider
