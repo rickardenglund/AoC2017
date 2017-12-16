@@ -6,10 +6,12 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class Day16Test {
-    var testList = mutableListOf<Int>()
+    var testList = MutableList(5,{i -> i+1})
     @BeforeMethod
     fun init() {
-        testList = mutableListOf(1,2,3,4,5)
+        for (i in 0 until testList.size) {
+            testList[i] = i +1
+        }
     }
 
 
