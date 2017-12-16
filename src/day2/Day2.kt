@@ -1,6 +1,6 @@
 package day2
 
-import input.getInput
+import util.getInput
 
 data class MinMax(val min :Int, val max: Int)
 

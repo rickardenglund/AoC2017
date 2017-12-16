@@ -1,6 +1,6 @@
 package day4
 
-import input.getInput
+import util.getInput
 
 fun main(args: Array<String>) {
     val validLines = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day4\\testInput",

@@ -1,6 +1,6 @@
 package day8
 
-import input.getInput
+import util.getInput
 import java.lang.Integer.max
 
 data class Instruction(

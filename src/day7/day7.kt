@@ -1,6 +1,6 @@
 package day7
 
-import input.getInput
+import util.getInput
 
 data class ParseResult(val name: String, val weight: Int, val children: List<String>)
 

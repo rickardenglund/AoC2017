@@ -1,7 +1,6 @@
 package day14
 
 import day10.knotHash
-import input.getInput
 import kotlin.math.absoluteValue
 
 val input = "jzgqcdpd"

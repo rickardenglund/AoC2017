@@ -1,11 +1,11 @@
 package day13
 
-import input.getInput
+import util.getInput
 
 data class Wall(val time: Int, val depth: Int)
 
 fun main(args: Array<String>) {
-    val input = parseInput("input")
+    val input = parseInput("util")
 
     for (delay in 1 until Int.MAX_VALUE) {
 //val    delay = 1
@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
 //    var severity = Int.MAX_VALUE
 //    var delay = 0
 //    while (severity > 0) {
-//        severity = getSeverity(input, delay)
+//        severity = getSeverity(util, delay)
 //        delay++
 //    }
 //        println("delay: ${delay-1} S: $severity")

@@ -1,6 +1,6 @@
 package day12
 
-import input.getInput
+import util.getInput
 
 
 data class Node(val name: String, val neighbours: List<String>)

@@ -1,6 +1,6 @@
 package day5
 
-import input.getInput
+import util.getInput
 
 fun main(args: Array<String>) {
     val input = getInput("E:\\rickard\\Documents\\Advent of code\\src\\day5\\testInput",

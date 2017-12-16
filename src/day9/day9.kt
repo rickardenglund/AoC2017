@@ -1,6 +1,6 @@
 package day9
 
-import input.getInput
+import util.getInput
 
 
 fun main(args: Array<String>){
