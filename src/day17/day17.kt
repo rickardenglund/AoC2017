@@ -3,17 +3,33 @@ package day17
 import util.ProgressReporter
 import kotlin.system.measureTimeMillis
 
-val input = 335
+val stepSize = 335
 val nIterations = 50_000_000
-val batchSize = 100_000
 
 fun main(args: Array<String>) {
+    p2vPeter(nIterations, stepSize)
+}
+
+fun p2vPeter(nIterations: Int, stepSize: Int) {
+    var pos = 0
+    var p1 = -1
+
+    for (i in 1 until nIterations) {
+        pos = (pos + stepSize) % i
+        pos++
+        if (pos == 1) p1 = i
+    }
+
+    println("Number at pos 1: $p1")
+}
+
+fun p2V1() {
     val root = BufferNode(0)
     var currentNode = root
     val progress = ProgressReporter(nIterations)
     val time = measureTimeMillis {
         for (i in 1..nIterations) {
-            currentNode = currentNode.insert(input, i)
+            currentNode = currentNode.insert(stepSize, i)
             progress.iterationDone()
         }
     }
