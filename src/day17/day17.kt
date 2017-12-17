@@ -2,11 +2,11 @@ package day17
 
 import util.reportProgress
 import java.lang.System.currentTimeMillis
-import kotlin.system.measureTimeMillis
 
 val input = 335
-val nIterations = 50000000
+val nIterations = 50_000_000
 val batchSize = 100_000
+
 fun main(args: Array<String>) {
     val root = BufferNode(0)
     var currentNode = root
@@ -21,7 +21,6 @@ fun main(args: Array<String>) {
     }
 
     println("next: ${root.next.value}")
-
 }
 
 class BufferNode<T>(val value: T) {
