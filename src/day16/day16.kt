@@ -1,5 +1,6 @@
 package day16
 
+import util.ProgressReporter
 import kotlin.system.measureTimeMillis
 
 val programNames = listOf("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p")
@@ -19,8 +20,10 @@ fun main(args: Array<String>) {
 }
 
 fun dance(programs: MutableList<Int>, moves: List<() -> Unit>) {
+    val progress = ProgressReporter(iterations)
     (1..iterations).forEach {
         moves.forEach { it() }
+        progress.iterationDone()
     }
     programs.print()
 }

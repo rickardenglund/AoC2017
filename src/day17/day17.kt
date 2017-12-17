@@ -1,7 +1,7 @@
 package day17
 
-import util.reportProgress
-import java.lang.System.currentTimeMillis
+import util.ProgressReporter
+import kotlin.system.measureTimeMillis
 
 val input = 335
 val nIterations = 50_000_000
@@ -10,16 +10,14 @@ val batchSize = 100_000
 fun main(args: Array<String>) {
     val root = BufferNode(0)
     var currentNode = root
-    var time = currentTimeMillis()
-    for (i in 1..nIterations) {
-        currentNode = currentNode.insert(input, i)
-        if (i % batchSize == 0) {
-            val now = currentTimeMillis()
-            reportProgress(i, nIterations, batchSize, now - time)
-            time = now
+    val progress = ProgressReporter(nIterations)
+    val time = measureTimeMillis {
+        for (i in 1..nIterations) {
+            currentNode = currentNode.insert(input, i)
+            progress.iterationDone()
         }
     }
-
+    println("Total: $time")
     println("next: ${root.next.value}")
 }
 
