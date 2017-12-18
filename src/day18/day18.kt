@@ -2,19 +2,41 @@ package day18
 
 import util.getInput
 
+class Program() {
+    var pc = 0
+    private val registers = hashMapOf<String, Long>()
 
-val registers = hashMapOf<String, Int>()
+    fun get(str: String): Long {
+        try {
+            return str.toLong()
+        } catch (e: NumberFormatException) {}
+        return registers[str] ?: 0
+    }
+
+    fun set(registry: String, value: Long) {
+        registers[registry] = value
+    }
+
+    fun print() {
+        println("###")
+        registers.entries.forEach(::println)
+        println()
+    }
+
+    fun jump(steps: Int) {
+        pc += steps - 1
+    }
+}
 
 
 fun main(args: Array<String>) {
-    val program = getProgram().map { parse(it, registers) }
-    registers["pc"] = 0
-    registers["playing"] = 0
+    val program = Program()
+    val code = getProgram().map { parse(it, program) }
 
-    while (registers["pc"]!! < program.size) {
-        program[registers["pc"]!!]()
-        registers.print()
-        registers["pc"] = registers["pc"]!! + 1
+
+    while (program.pc < code.size) {
+        code[program.pc]()
+        program.pc++
     }
 }
 
@@ -22,35 +44,42 @@ fun getProgram():List<String> {
     return getInput("E:\\rickard\\Documents\\Advent of code\\src\\day18\\input",{a -> a})
 }
 
-fun HashMap<String, Int>.print() {
-    println("###")
-    this.entries.forEach(::println)
-    println()
-}
 
-fun parse(cmd: String, registers: HashMap<String, Int>): () -> Unit {
-    val parts = cmd.split(" ")
+
+fun parse(cmdString: String, program: Program): () -> Unit {
+    val parts = cmdString.split(" ")
     println(parts)
     val cmd =  when (parts[0]) {
-        "snd" -> {{println(parts); registers["playing"] = getOperand(registers,parts[1])}}
-        "set" -> {{println(parts);  registers[parts[1]] = getOperand(registers,parts[2])}}
-        "add" -> {{println(parts); registers[parts[1]] = getOperand(registers,parts[1]) + getOperand(registers,parts[2])}}
-        "mul" -> {{println(parts); registers[parts[1]] = getOperand(registers,parts[1]) * getOperand(registers,parts[2])}}
-        "mod" -> {{println(parts); registers[parts[1]] = getOperand(registers,parts[1]) % getOperand(registers,parts[2])}}
-        "rcv" -> {{println(parts);  if (registers[parts[1]]!! != 0) {println("Done: ${registers["playing"]}");throw Exception("Done ")}}}//registers[parts[1]] = registers["playing"]!!}}
-        "jgz" -> {{println(parts); if (registers[parts[1]]!! > 0) registers["pc"] = registers["pc"]!! + parts[2].toInt() - 1}}
+        "snd" -> {{println(parts); program.set("playing",program.get(parts[1]))}}
+        "set" -> {{println(parts);  program.set(parts[1], program.get(parts[2]))}}
+        "add" -> {{
+            println(parts)
+            program.set(parts[1], program.get(parts[1]) + program.get(parts[2]))
+        }}
+        "mul" -> {{
+            println(parts)
+            program.set(parts[1], program.get(parts[1]) * program.get(parts[2]))
+        }}
+        "mod" -> {{
+            println(parts)
+            program.set(parts[1], program.get(parts[1]) % program.get(parts[2]))
+        }}
+        "rcv" -> {{
+            println(parts)
+            if (program.get(parts[1]) != 0.toLong()) {
+                println("Done: ${program.get("playing")}")
+                throw Exception("Done")
+            }
+        }}
+        "jgz" -> {{
+            println(parts)
+            if (program.get(parts[1]) > 0) {
+                program.jump(parts[2].toInt())
+            }
+        }}
 
         else -> {{print("Failed to parse: "); println(parts); }}
     }
     return cmd
 }
 
-fun getOperand(registers: HashMap<String, Int>, str: String): Int {
-    try {
-        return str.toInt()
-    } catch (e: NumberFormatException) {}
-
-    val value = registers[str]
-    return if (value != null) value!!
-    else 0
-}
