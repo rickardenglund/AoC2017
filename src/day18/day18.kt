@@ -2,41 +2,16 @@ package day18
 
 import util.getInput
 
-class Program() {
-    var pc = 0
-    private val registers = hashMapOf<String, Long>()
-
-    fun get(str: String): Long {
-        try {
-            return str.toLong()
-        } catch (e: NumberFormatException) {}
-        return registers[str] ?: 0
-    }
-
-    fun set(registry: String, value: Long) {
-        registers[registry] = value
-    }
-
-    fun print() {
-        println("###")
-        registers.entries.forEach(::println)
-        println()
-    }
-
-    fun jump(steps: Int) {
-        pc += steps - 1
-    }
-}
-
-
 fun main(args: Array<String>) {
-    val program = Program()
-    val code = getProgram().map { parse(it, program) }
+    val p1 = Program(0)
+    val p2 = Program(1)
+    val code1 = getProgram().map { parse(it, p1, p2) }
+    val code2 = getProgram().map { parse(it, p2, p1) }
 
-
-    while (program.pc < code.size) {
-        code[program.pc]()
-        program.pc++
+    while (p1.pc < code1.size && p2.pc < code2.size) {
+        code1[p1.pc]()
+        code2[p2.pc]()
+        println("0 sent: ${p1.sentValues} 1 sent: ${p2.sentValues}")
     }
 }
 
@@ -44,13 +19,18 @@ fun getProgram():List<String> {
     return getInput("E:\\rickard\\Documents\\Advent of code\\src\\day18\\input",{a -> a})
 }
 
-
-
-fun parse(cmdString: String, program: Program): () -> Unit {
+fun parse(cmdString: String, program: Program, otherProgram: Program): () -> Unit {
     val parts = cmdString.split(" ")
     println(parts)
     val cmd =  when (parts[0]) {
-        "snd" -> {{println(parts); program.set("playing",program.get(parts[1]))}}
+        "snd" -> {{
+            println(parts)
+            program.send(otherProgram, program.get(parts[1]))
+        }}
+        "rcv" -> {{
+            println(parts)
+            program.receive(parts[1])
+        }}
         "set" -> {{println(parts);  program.set(parts[1], program.get(parts[2]))}}
         "add" -> {{
             println(parts)
@@ -64,18 +44,9 @@ fun parse(cmdString: String, program: Program): () -> Unit {
             println(parts)
             program.set(parts[1], program.get(parts[1]) % program.get(parts[2]))
         }}
-        "rcv" -> {{
-            println(parts)
-            if (program.get(parts[1]) != 0.toLong()) {
-                println("Done: ${program.get("playing")}")
-                throw Exception("Done")
-            }
-        }}
         "jgz" -> {{
             println(parts)
-            if (program.get(parts[1]) > 0) {
-                program.jump(parts[2].toInt())
-            }
+            program.jgz(parts[1], parts[2])
         }}
 
         else -> {{print("Failed to parse: "); println(parts); }}
