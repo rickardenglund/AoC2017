@@ -4,24 +4,17 @@ import util.ProgressReporter
 import util.getInput
 
 fun main(args: Array<String>) {
-    val iterations = 50_000
+    val iterations = 5000
     val particles = parse().toMutableList()
     val reporter = ProgressReporter(iterations)
-    for (i in 1..5000) {
+
+    for (i in 1..iterations) {
         particles.resolveCollisions()
         particles.forEach{it.tick()}
-        if (i % 1 == 0)
+        if (i % 100 == 0)
             println("size: ${particles.size}")
         reporter.iterationDone()
     }
-}
-
-fun MutableList<Particle>.resolveCollisions() {
-    val collidingParticles =
-            this.filter {
-                particle -> this.filter{it.pos == particle.pos}.size > 1
-            }
-    this.removeAll(collidingParticles)
 }
 
 fun parse(): List<Particle> {

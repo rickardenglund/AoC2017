@@ -18,3 +18,11 @@ data class Particle(var pos: Vec, var vel: Vec, val acc: Vec) {
         return pos.x.absoluteValue + pos.y.absoluteValue + pos.z.absoluteValue
     }
 }
+
+fun MutableList<Particle>.resolveCollisions() {
+    val collidingParticles =
+            this.filter {
+                particle -> this.filter{it.pos == particle.pos}.size > 1
+            }
+    this.removeAll(collidingParticles)
+}
