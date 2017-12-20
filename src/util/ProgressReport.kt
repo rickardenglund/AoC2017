@@ -24,7 +24,7 @@ private fun estimateMillisRemaining(totalIterations: Int, batchSize: Int, batchT
     return neededIterations * batchTime
 }
 
-class ProgressReporter(val totalIterations: Int) {
+class ProgressReporter(val totalIterations: Int, val consoleOutput: Boolean = false) {
 
     var currentIteration = 0
     var lastTimePrinted = currentTimeMillis()
@@ -43,7 +43,9 @@ class ProgressReporter(val totalIterations: Int) {
                     totalIterations,
                     currentBatchSize,
                     currentBatchTime)
-            println(progressStr)
+            if (consoleOutput) {
+                println(progressStr)
+            }
             progressFrame.update(currentIteration, totalIterations, currentBatchSize, currentBatchTime, progressStr)
             lastTimePrinted = newTime
             lastReportedIteration = currentIteration
