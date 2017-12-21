@@ -22,7 +22,6 @@ class Canvas(input: String) {
             1 -> {
                 var result = ""
                 for (i in 0 until width) {
-//                    println(i * width + row)
                     result += data[i * width + row]
                 }
                 return result.reversed()
@@ -54,23 +53,35 @@ class Canvas(input: String) {
         val matches = mutableListOf<Canvas>()
         for (row in 0 until chunksPerRow) {
             for (col in 0 until chunksPerRow) {
-                var pos = row*chunksPerRow + col
+                var pos = row*width + col
                 pos *= templateWidth
-                matches.add(patterns.first { matches(pos, it) }.target)
+                try {
+                    val matchingPattern = patterns.first { matches(pos, it) }
+                    matches.add(matchingPattern.target)
+                } catch (e: NoSuchElementException) {
+                    println("pos: $pos")
+                    println(this)
+                    throw e
+                }
             }
         }
-
 
         setData(matches.merge(chunksPerRow))
     }
 
     fun matches(pos: Int, pattern: Pattern): Boolean {
+        return (0..3).any { matches(pos,pattern, it) }
+                || (0..3).any { matches(pos,pattern, it, true) }
+    }
+
+    private fun matches(pos: Int, pattern: Pattern, rotation: Int, flip: Boolean = false): Boolean {
         val result = true
         val patternWidth = pattern.template.width
         for (row in 0 until patternWidth) {
             val start = pos + row*width
-            val partOfRow = data.substring(start, start + patternWidth)
-            if (pattern.template.getRow(row) != partOfRow)
+            var partOfRow = data.substring(start, start + patternWidth)
+            if (flip) partOfRow = partOfRow.reversed()
+            if (pattern.template.getRow(row, rotation) != partOfRow)
                 return false
         }
         return result
