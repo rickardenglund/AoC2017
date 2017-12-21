@@ -16,7 +16,20 @@ class Canvas(input: String) {
 
 
     fun getRow(row: Int, rotateClockwise: Int = 0): String {
-        return data.substring(row*width, (row+1)*width)
+        when (rotateClockwise) {
+            0 -> return data.substring(row*width, (row+1)*width)
+            2 -> return getRow(width - 1 - row).reversed()
+            1 -> {
+                var result = ""
+                for (i in 0 until width) {
+//                    println(i * width + row)
+                    result += data[i * width + row]
+                }
+                return result.reversed()
+            }
+            3 -> return getRow(width - 1 - row, 1).reversed()
+        }
+        throw IllegalArgumentException("Invalid rotation value")
     }
 
     override fun toString(): String {

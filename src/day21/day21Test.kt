@@ -38,6 +38,14 @@ fun patternMatch2SizePattern() {
     assertTrue (canvas.matches(0,pattern))
 }
 
+//@Test
+//fun patternRotateMatches() {
+//    val canvas = Canvas(".#/..")
+//    val pattern = Pattern("#./..", ".../.../.../")
+//
+//    assertTrue (canvas.matches(0,pattern))
+//}
+
 @Test
 fun patternApply4by4() {
     val canvas = Canvas(".#.#/.#.#/.#.#/.#.#")
@@ -84,3 +92,33 @@ fun mergeCanvases() {
     assertEquals("..../..../..../....",
             Canvas(canvases.merge(canvas.width)).getRaw())
 }
+
+@Test
+fun rotate1() {
+    val canvas = Canvas("..#/..#/.#.")
+    assertEquals("...", canvas.getRow(0,1))
+    assertEquals("#..", canvas.getRow(1,1))
+    assertEquals(".##", canvas.getRow(2,1))
+}
+
+@Test
+fun rotate2() {
+    val canvas = Canvas("..#/..#/.#.")
+    assertEquals(".#.", canvas.getRow(0,2))
+    assertEquals("#..", canvas.getRow(1,2))
+    assertEquals("#..", canvas.getRow(2,2))
+}
+
+@Test
+fun rotate3() {
+    val canvas = Canvas("..#/..#/.#.")
+    assertEquals("##.", canvas.getRow(0,3))
+    assertEquals("..#", canvas.getRow(1,3))
+    assertEquals("...", canvas.getRow(2,3))
+}
+
+
+
+//..#
+//..#
+//.#.
