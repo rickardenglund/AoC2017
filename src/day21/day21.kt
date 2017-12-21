@@ -13,15 +13,17 @@ fun main(args: Array<String>) {
     println("--- CANVAS --- \n$canvas")
     val iterations = 18
     val progress = ProgressReporter(iterations)
-    for ( a in 1..iterations) {
+    for ( i in 1..iterations) {
+        print("$i Width: ${canvas.width}")
         if (canvas.width % 2 == 0)
             canvas.apply(smallPatterns)
         else
             canvas.apply(largePatterns)
+        println(" -")
         progress.iterationDone()
     }
 
-    println("--- CANVAS --- \n$canvas")
+//    println("--- CANVAS --- \n$canvas")
     println("#On: ${canvas.getRaw().count { it == '#' }}")
 }
 

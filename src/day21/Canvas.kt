@@ -1,5 +1,7 @@
 package day21
 
+import kotlin.streams.toList
+
 class Canvas(input: String) {
     var width: Int = 0
         private set
@@ -20,11 +22,11 @@ class Canvas(input: String) {
             0 -> return data.substring(row*width, (row+1)*width)
             2 -> return getRow(width - 1 - row).reversed()
             1 -> {
-                var result = ""
+                val sb = StringBuilder()
                 for (i in 0 until width) {
-                    result += data[i * width + row]
+                    sb.append(data[i * width + row])
                 }
-                return result.reversed()
+                return sb.reverse().toString()
             }
             3 -> return getRow(width - 1 - row, 1).reversed()
         }
@@ -40,23 +42,31 @@ class Canvas(input: String) {
     }
 
     fun getRaw(): String {
-        return data
-                .chunked(width)
-                .fold("", {acc, it-> acc + it + "/"})
-                .trimEnd { it == '/' }
+        val sb = StringBuilder()
+        data.chunked(width)
+                .forEach{
+                    sb.append(it)
+                    sb.append("/")
+                }
+        return sb.toString().trimEnd { it == '/' }
     }
 
     fun apply(patterns: List<Pattern>) {
         val templateWidth = patterns[0].template.width
         val chunksPerRow = width / templateWidth
 
-        val matches = (0 until chunksPerRow).flatMap { row ->
+
+        val poss = (0 until chunksPerRow).flatMap { row ->
             (0 until chunksPerRow).map { col ->
-                var pos = row*width + col
+                var pos = row * width + col
                 pos *= templateWidth
-                patterns.first { matches(pos, it) }.target
+                pos
             }
         }
+
+        val matches = poss.parallelStream().map { pos ->
+            patterns.first{matches(pos, it) }.target
+        }.toList()
 
         setData(matches.merge(chunksPerRow))
     }
@@ -81,15 +91,15 @@ class Canvas(input: String) {
 }
 
 fun List<Canvas>.merge(chunksPerRow: Int): String {
-    var newCanvas = ""
+    val newCanvas = StringBuilder()
     val targetWidth = this[0].width
     this.chunked(chunksPerRow).forEach { canvasList ->
         for (row in 0 until targetWidth) {
             for (canvasIndex in 0 until chunksPerRow) {
-                newCanvas += canvasList[canvasIndex].getRow(row)
+                newCanvas.append(canvasList[canvasIndex].getRow(row))
             }
-            newCanvas += "/"
+            newCanvas.append( "/")
         }
     }
-    return newCanvas
+    return newCanvas.toString()
 }
