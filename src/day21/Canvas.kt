@@ -50,19 +50,11 @@ class Canvas(input: String) {
         val templateWidth = patterns[0].template.width
         val chunksPerRow = width / templateWidth
 
-        val matches = mutableListOf<Canvas>()
-        for (row in 0 until chunksPerRow) {
-            for (col in 0 until chunksPerRow) {
+        val matches = (0 until chunksPerRow).flatMap { row ->
+            (0 until chunksPerRow).map { col ->
                 var pos = row*width + col
                 pos *= templateWidth
-                try {
-                    val matchingPattern = patterns.first { matches(pos, it) }
-                    matches.add(matchingPattern.target)
-                } catch (e: NoSuchElementException) {
-                    println("pos: $pos")
-                    println(this)
-                    throw e
-                }
+                patterns.first { matches(pos, it) }.target
             }
         }
 
