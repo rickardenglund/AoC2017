@@ -15,7 +15,7 @@ class Canvas(input: String) {
     }
 
 
-    fun getRow(row: Int): String {
+    fun getRow(row: Int, rotateClockwise: Int = 0): String {
         return data.substring(row*width, (row+1)*width)
     }
 
@@ -36,13 +36,18 @@ class Canvas(input: String) {
 
     fun apply(patterns: List<Pattern>) {
         val templateWidth = patterns[0].template.width
-//        val targetWidth = patterns[0].target.width
         val chunksPerRow = width / templateWidth
 
         val matches = mutableListOf<Canvas>()
-        for (i in 0 until chunksPerRow*chunksPerRow step templateWidth) {
-            matches.add(patterns[0].target)
+        for (row in 0 until chunksPerRow) {
+            for (col in 0 until chunksPerRow) {
+                var pos = row*chunksPerRow + col
+                pos *= templateWidth
+                matches.add(patterns.first { matches(pos, it) }.target)
+            }
         }
+
+
         setData(matches.merge(chunksPerRow))
     }
 
